@@ -1,0 +1,132 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+body {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #e9e9e9;
+  border: solid 2px lawngreen;
+  font-family: sans-serif;
+}
+
+header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+h1 {
+  font-family: 'Monoton', cursive;
+  color: #7e1e53;
+  font-size: 65px;
+}
+
+.label-section {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.label-section h2,
+.label-section b {
+  font-family: 'News Cycle', sans-serif;
+  color: #5a153b;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 80%;
+}
+
+#container {
+  width: unset;
+  height: 100%;
+  /* border: solid 1px indianred; */
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+#container > section {
+  width: 400px;
+}
+
+#generate-types-input {
+  /* border: solid 1px red; */
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+  padding: 20px;
+}
+
+.pad-area {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+.pad {
+  width: 100px;
+  padding: 4px 10px;
+  background-color: #db3474;
+  color: lightcyan;
+  border: none;
+  cursor: pointer;
+  transition: ease 10ms;
+  border-radius: 50px;
+}
+
+.pad-animated {
+  animation: 1s pulse 1s ease infinite;
+  transform-origin: center;
+}
+
+.fade {
+  background-color: rgb(39, 10, 107);
+  color: white;
+  transition: ease 70ms;
+  transform: scale(0.95);
+}
+
+.pad:hover {
+  background-color: #7e1e53;
+  transition: ease-in 10ms;
+}
+
+#stopButton {
+  padding: 4px 18px;
+  border: none;
+  border-radius: 50px;
+  border: solid 1px #db3474;
+  color: #db3474;
+  align-self: center;
+  margin-top: 15px;
+}
+
+#stopButton:hover {
+  background-color: #db3474;
+  color: #e9e9e9;
+  cursor: pointer;
+}
+
+@keyframes pulse {
+  0% {
+    background-attachment: red;
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
