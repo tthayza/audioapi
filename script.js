@@ -2,6 +2,7 @@ let audioContext
 let selectTypes = document.querySelector('#select-types')
 let oscillatorTypes = ['', 'Sine', 'Square', 'Sawtooth', 'Triangle']
 
+// Criando opções de tipo de oscilador a partir do array oscillatorTypes
 let container = document.querySelector('#container')
 oscillatorTypes.forEach((type) => {
   const option = document.createElement('option')
@@ -10,49 +11,52 @@ oscillatorTypes.forEach((type) => {
   selectTypes.appendChild(option)
 })
 
+// Verificando se determinado elemento é duplicado a partir de um option selecionado
 function checkDuplicatedElements(type) {
   const element = document.querySelector(`.section-${type}`)
   if (element) return true
   return false
 }
 
+// Gerando a section com pads de acordo com cada tipo de oscilador
 function generateTypeOscillatorSection(type) {
-  console.log('retorno', checkDuplicatedElements(type))
+  const typeLowerCase = type.toLowerCase()
   if (checkDuplicatedElements(type)) return
   const section = document.createElement('section')
-  section.classList.add(`section-${type}`)
   section.innerHTML = `    <div class="label-section" >
-    <h2>${type} </h2>
-    <button> X </button>
+  <h2>${type} </h2>
+  <button> X </button>
 
-   </div>
-    <div class="pad-area">
-      <button class='pad pad1'>Pad 1</button>
-      <button class='pad pad2'>Pad 2</button>
-      <button class='pad pad3'>Pad 3</button>
-      <button class='pad pad4'>Pad 4</button>
-      <button class='pad pad5'>Pad 5</button>
-      <button class='pad pad6'>Pad 6</button>
-    </div>
-    `
+ </div>
+  `
+  const padArea = document.createElement('div')
+  padArea.classList.add('pad-area')
+  section.classList.add(`section-${type}`)
+  for (let i = 1; i <= 6; i++) {
+    const button = document.createElement('button')
+    button.setAttribute('id', `pad${i}-${typeLowerCase}`)
+    button.addEventListener('click', () => {
+      ensureAudioContext()
+
+      startRhythmForPad(button.id)
+      button.classList.toggle('pad-animated')
+      button.classList.toggle('fade')
+    })
+
+    button.classList.add('pad')
+    button.textContent = `Pad ${i}`
+    padArea.appendChild(button)
+  }
+  section.appendChild(padArea)
 
   return section
 }
 
 selectTypes.addEventListener('change', () => {
-  console.log(selectTypes.value)
   if (selectTypes.value) {
     const newElement = generateTypeOscillatorSection(selectTypes.value)
+
     if (newElement) container.appendChild(newElement)
-    let pads = document.querySelectorAll('.pad')
-    pads.forEach((pad) => {
-      pad.addEventListener('click', () => {
-        ensureAudioContext()
-        startRhythmForPad(pad.classList[1])
-        pad.classList.toggle('fade')
-        pad.classList.toggle('pad-animated')
-      })
-    })
   }
 })
 
@@ -62,11 +66,11 @@ const bpm = 120 // Batidas por minuto
 const beatDuration = 60 / bpm
 
 // Função para criar um oscilador com uma frequência específica
-function createOscillator(frequency) {
+function createOscillator(frequency, currentType) {
   const oscillator = audioContext.createOscillator()
-
-  oscillator.type = 'triangle' // Pode ser 'sine', 'square', 'sawtooth' ou 'triangle'
+  oscillator.type = currentType // Pode ser 'sine', 'square', 'sawtooth' ou 'triangle'
   oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime)
+
   return oscillator
 }
 
@@ -100,30 +104,31 @@ function startRhythmForPad(padId) {
 
   rhythmIntervals[padId] = setInterval(() => {
     let bassDrum, snareDrum
+    const padIdFormated = padId.slice(0, 4)
 
-    if (padId === 'pad1') {
-      bassDrum = createOscillator(180)
+    if (padIdFormated === 'pad1') {
+      bassDrum = createOscillator(180, padId.slice(5))
       playSound(bassDrum, createAmplitudeEnvelope(), 0.2)
     }
-    if (padId === 'pad2') {
-      bassDrum = createOscillator(250)
+    if (padIdFormated === 'pad2') {
+      bassDrum = createOscillator(250, padId.slice(5))
       playSound(bassDrum, createAmplitudeEnvelope(), 0.8)
     }
 
-    if (padId === 'pad3') {
-      snareDrum = createOscillator(330)
+    if (padIdFormated === 'pad3') {
+      snareDrum = createOscillator(330, padId.slice(5))
       playSound(snareDrum, createAmplitudeEnvelope(), 0.2)
     }
-    if (padId === 'pad4') {
-      snareDrum = createOscillator(480)
+    if (padIdFormated === 'pad4') {
+      snareDrum = createOscillator(480, padId.slice(5))
       playSound(snareDrum, createAmplitudeEnvelope(), 0.4)
     }
-    if (padId === 'pad5') {
-      snareDrum = createOscillator(560)
+    if (padIdFormated === 'pad5') {
+      snareDrum = createOscillator(560, padId.slice(5))
       playSound(snareDrum, createAmplitudeEnvelope(), 0.4)
     }
-    if (padId === 'pad6') {
-      snareDrum = createOscillator(950)
+    if (padIdFormated === 'pad6') {
+      snareDrum = createOscillator(950, padId.slice(5))
       playSound(snareDrum, createAmplitudeEnvelope(), 0.4)
     }
 
